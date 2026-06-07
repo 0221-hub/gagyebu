@@ -55,21 +55,20 @@ body{display:flex;flex-direction:column;max-width:430px;margin:0 auto}
   position:sticky;top:0;z-index:10;
 }
 .header-top{display:flex;justify-content:space-between;align-items:center}
-.header h1{font-size:22px;font-weight:600;letter-spacing:-0.5px}
-.month-nav{display:flex;align-items:center;gap:10px}
-.month-btn{background:none;border:none;font-size:20px;color:var(--text2);cursor:pointer;padding:4px;line-height:1}
-.month-label{font-size:14px;font-weight:500;color:var(--text2);min-width:70px;text-align:center}
+.header h1{font-size:24px;font-weight:600;letter-spacing:-0.5px}
+.month-btn{background:none;border:none;font-size:22px;color:var(--text2);cursor:pointer;padding:4px;line-height:1}
+.month-label{font-size:16px;font-weight:500;color:var(--text2);min-width:70px;text-align:center}
 
 .summary{display:grid;grid-template-columns:1fr 1fr 1fr;gap:1px;background:var(--border);border-bottom:0.5px solid var(--border)}
 .sum-item{background:var(--surface);padding:14px 16px}
-.sum-label{font-size:11px;color:var(--text3);margin-bottom:4px;letter-spacing:0.3px}
-.sum-val{font-size:17px;font-weight:600;letter-spacing:-0.3px}
+.sum-label{font-size:13px;color:var(--text3);margin-bottom:4px;letter-spacing:0.3px}
+.sum-val{font-size:19px;font-weight:600;letter-spacing:-0.3px}
 .sum-val.exp{color:var(--expense)}
 .sum-val.inc{color:var(--income)}
 .sum-val.bal{color:var(--text)}
 
 .tab-bar{display:flex;background:var(--surface);border-bottom:0.5px solid var(--border);padding:0 8px}
-.tab{flex:1;padding:11px 4px;text-align:center;font-size:13px;font-weight:500;color:var(--text3);cursor:pointer;border-bottom:2px solid transparent;transition:all .15s;letter-spacing:0.2px}
+.tab{flex:1;padding:11px 4px;text-align:center;font-size:15px;font-weight:500;color:var(--text3);cursor:pointer;border-bottom:2px solid transparent;transition:all .15s;letter-spacing:0.2px}
 .tab.on{color:var(--text);border-bottom-color:var(--text)}
 
 .content{flex:1;overflow-y:auto;-webkit-overflow-scrolling:touch;padding-bottom:calc(var(--safe-bottom) + 20px)}
@@ -77,7 +76,7 @@ body{display:flex;flex-direction:column;max-width:430px;margin:0 auto}
 /* 기록 탭 */
 .add-card{margin:14px 16px;background:var(--surface);border-radius:var(--radius);border:0.5px solid var(--border2);overflow:hidden}
 .type-row{display:flex;border-bottom:0.5px solid var(--border)}
-.type-btn{flex:1;padding:11px;font-size:14px;font-weight:500;cursor:pointer;background:none;border:none;color:var(--text3);font-family:inherit;transition:all .15s}
+.type-btn{flex:1;padding:11px;font-size:16px;font-weight:500;cursor:pointer;background:none;border:none;color:var(--text3);font-family:inherit;transition:all .15s}
 .type-btn.on-exp{background:#fff8f5;color:var(--expense)}
 .type-btn.on-inc{background:#f2faf7;color:var(--income)}
 @media (prefers-color-scheme: dark) {
@@ -87,47 +86,47 @@ body{display:flex;flex-direction:column;max-width:430px;margin:0 auto}
 .add-fields{padding:12px}
 .field{display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:0.5px solid var(--border)}
 .field:last-child{border-bottom:none}
-.field-label{font-size:12px;color:var(--text3);width:32px;flex-shrink:0;text-align:right}
-.field input,.field select{flex:1;background:none;border:none;outline:none;font-size:15px;color:var(--text);font-family:inherit;font-weight:500}
+.field-label{font-size:14px;color:var(--text3);width:32px;flex-shrink:0;text-align:right}
+.field input,.field select{flex:1;background:none;border:none;outline:none;font-size:17px;color:var(--text);font-family:inherit;font-weight:500}
 .field input::placeholder{color:var(--text3);font-weight:400}
 .field select option{background:var(--surface);color:var(--text)}
-.add-btn{width:100%;padding:13px;background:var(--text);color:var(--bg);border:none;font-size:15px;font-weight:600;cursor:pointer;font-family:inherit;letter-spacing:0.3px;transition:opacity .15s}
+.add-btn{width:100%;padding:13px;background:var(--text);color:var(--bg);border:none;font-size:17px;font-weight:600;cursor:pointer;font-family:inherit;letter-spacing:0.3px;transition:opacity .15s}
 .add-btn:active{opacity:.75}
 
 .rec-group{margin:0 16px 4px}
-.rec-date-header{font-size:12px;color:var(--text3);padding:14px 0 6px;letter-spacing:0.3px;font-weight:500}
+.rec-date-header{font-size:14px;color:var(--text3);padding:14px 0 6px;letter-spacing:0.3px;font-weight:500}
 .rec-item{display:flex;align-items:center;gap:10px;padding:12px 14px;background:var(--surface);border:0.5px solid var(--border);border-radius:10px;margin-bottom:6px}
 .dot{width:9px;height:9px;border-radius:50%;flex-shrink:0}
 .rec-info{flex:1;min-width:0}
-.rec-name{font-size:14px;font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.rec-cat{font-size:12px;color:var(--text3);margin-top:1px}
-.rec-amt{font-size:15px;font-weight:600;letter-spacing:-0.3px}
-.rec-del{background:none;border:none;cursor:pointer;color:var(--text3);padding:4px;font-size:18px;line-height:1;margin-left:4px}
-.empty-msg{text-align:center;padding:48px 0;color:var(--text3);font-size:14px}
+.rec-name{font-size:16px;font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.rec-cat{font-size:14px;color:var(--text3);margin-top:1px}
+.rec-amt{font-size:17px;font-weight:600;letter-spacing:-0.3px}
+.rec-del{background:none;border:none;cursor:pointer;color:var(--text3);padding:4px;font-size:20px;line-height:1;margin-left:4px}
+.empty-msg{text-align:center;padding:48px 0;color:var(--text3);font-size:16px}
 
 /* 통계 탭 */
 .stat-section{margin:14px 16px}
-.stat-title{font-size:13px;font-weight:500;color:var(--text2);margin-bottom:10px}
+.stat-title{font-size:15px;font-weight:500;color:var(--text2);margin-bottom:10px}
 .bar-item{margin-bottom:14px}
 .bar-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:5px}
-.bar-name{font-size:14px;font-weight:500}
-.bar-amt{font-size:14px;color:var(--text2)}
-.bar-pct{font-size:11px;color:var(--text3);margin-left:6px}
+.bar-name{font-size:16px;font-weight:500}
+.bar-amt{font-size:16px;color:var(--text2)}
+.bar-pct{font-size:13px;color:var(--text3);margin-left:6px}
 .bar-track{height:7px;background:var(--surface2);border-radius:4px;overflow:hidden}
 .bar-fill{height:100%;border-radius:4px;transition:width .4s ease}
-.no-data{text-align:center;padding:40px 0;color:var(--text3);font-size:14px}
+.no-data{text-align:center;padding:40px 0;color:var(--text3);font-size:16px}
 
 /* 카테고리 탭 */
 .cat-section{margin:14px 16px}
-.cat-section-title{font-size:13px;font-weight:500;color:var(--text2);margin-bottom:10px;padding-bottom:6px;border-bottom:0.5px solid var(--border)}
+.cat-section-title{font-size:15px;font-weight:500;color:var(--text2);margin-bottom:10px;padding-bottom:6px;border-bottom:0.5px solid var(--border)}
 .chips{display:flex;flex-wrap:wrap;gap:7px;margin-bottom:12px}
-.chip{display:flex;align-items:center;gap:5px;padding:6px 11px;border-radius:20px;border:0.5px solid var(--border2);font-size:13px;font-weight:500;background:var(--surface)}
+.chip{display:flex;align-items:center;gap:5px;padding:6px 11px;border-radius:20px;border:0.5px solid var(--border2);font-size:15px;font-weight:500;background:var(--surface)}
 .chip-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
-.chip-x{background:none;border:none;color:var(--text3);cursor:pointer;padding:0 0 0 3px;font-size:14px;line-height:1;font-family:inherit}
+.chip-x{background:none;border:none;color:var(--text3);cursor:pointer;padding:0 0 0 3px;font-size:16px;line-height:1;font-family:inherit}
 .new-row{display:flex;gap:8px;align-items:center}
-.new-row input[type=text]{flex:1;padding:9px 12px;border-radius:10px;border:0.5px solid var(--border2);background:var(--surface);color:var(--text);font-size:14px;font-family:inherit;outline:none}
+.new-row input[type=text]{flex:1;padding:9px 12px;border-radius:10px;border:0.5px solid var(--border2);background:var(--surface);color:var(--text);font-size:16px;font-family:inherit;outline:none}
 input[type=color].cpick{width:38px;height:38px;padding:3px;border-radius:10px;border:0.5px solid var(--border2);background:var(--surface);cursor:pointer;flex-shrink:0}
-.add-cat-btn{padding:9px 14px;border-radius:10px;border:0.5px solid var(--border2);background:var(--surface);color:var(--text);font-size:13px;font-weight:500;cursor:pointer;font-family:inherit;white-space:nowrap}
+.add-cat-btn{padding:9px 14px;border-radius:10px;border:0.5px solid var(--border2);background:var(--surface);color:var(--text);font-size:15px;font-weight:500;cursor:pointer;font-family:inherit;white-space:nowrap}
 </style>
 </head>
 <body>
