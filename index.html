@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="가계부">
+<title>가계부</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #f5f5f0;
+  --surface: #ffffff;
+  --surface2: #f0efea;
+  --text: #1a1a18;
+  --text2: #6b6b65;
+  --text3: #a0a09a;
+  --border: rgba(0,0,0,0.08);
+  --border2: rgba(0,0,0,0.14);
+  --expense: #d85a30;
+  --income: #1d9e75;
+  --radius: 14px;
+  --safe-top: env(safe-area-inset-top, 44px);
+  --safe-bottom: env(safe-area-inset-bottom, 20px);
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #141412;
+    --surface: #1e1e1c;
+    --surface2: #282826;
+    --text: #f0efe8;
+    --text2: #9a9a92;
+    --text3: #5a5a55;
+    --border: rgba(255,255,255,0.07);
+    --border2: rgba(255,255,255,0.12);
+  }
+}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+html,body{height:100%;background:var(--bg);font-family:'Noto Sans KR',sans-serif;color:var(--text);overscroll-behavior:none}
+body{display:flex;flex-direction:column;max-width:430px;margin:0 auto}
+
+.header{
+  padding: calc(var(--safe-top) + 16px) 20px 16px;
+  background:var(--surface);
+  border-bottom:0.5px solid var(--border);
+  position:sticky;top:0;z-index:10;
+}
+.header-top{display:flex;justify-content:space-between;align-items:center}
+.header h1{font-size:22px;font-weight:600;letter-spacing:-0.5px}
+.month-nav{display:flex;align-items:center;gap:10px}
+.month-btn{background:none;border:none;font-size:20px;color:var(--text2);cursor:pointer;padding:4px;line-height:1}
+.month-label{font-size:14px;font-weight:500;color:var(--text2);min-width:70px;text-align:center}
+
+.summary{display:grid;grid-template-columns:1fr 1fr 1fr;gap:1px;background:var(--border);border-bottom:0.5px solid var(--border)}
+.sum-item{background:var(--surface);padding:14px 16px}
+.sum-label{font-size:11px;color:var(--text3);margin-bottom:4px;letter-spacing:0.3px}
+.sum-val{font-size:17px;font-weight:600;letter-spacing:-0.3px}
+.sum-val.exp{color:var(--expense)}
+.sum-val.inc{color:var(--income)}
+.sum-val.bal{color:var(--text)}
+
+.tab-bar{display:flex;background:var(--surface);border-bottom:0.5px solid var(--border);padding:0 8px}
+.tab{flex:1;padding:11px 4px;text-align:center;font-size:13px;font-weight:500;color:var(--text3);cursor:pointer;border-bottom:2px solid transparent;transition:all .15s;letter-spacing:0.2px}
+.tab.on{color:var(--text);border-bottom-color:var(--text)}
+
+.content{flex:1;overflow-y:auto;-webkit-overflow-scrolling:touch;padding-bottom:calc(var(--safe-bottom) + 20px)}
+
+/* 기록 탭 */
+.add-card{margin:14px 16px;background:var(--surface);border-radius:var(--radius);border:0.5px solid var(--border2);overflow:hidden}
+.type-row{display:flex;border-bottom:0.5px solid var(--border)}
+.type-btn{flex:1;padding:11px;font-size:14px;font-weight:500;cursor:pointer;background:none;border:none;color:var(--text3);font-family:inherit;transition:all .15s}
+.type-btn.on-exp{background:#fff8f5;color:var(--expense)}
+.type-btn.on-inc{background:#f2faf7;color:var(--income)}
+@media (prefers-color-scheme: dark) {
+  .type-btn.on-exp{background:#2a1a14}
+  .type-btn.on-inc{background:#0f2420}
+}
+.add-fields{padding:12px}
+.field{display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:0.5px solid var(--border)}
+.field:last-child{border-bottom:none}
+.field-label{font-size:12px;color:var(--text3);width:32px;flex-shrink:0;text-align:right}
+.field input,.field select{flex:1;background:none;border:none;outline:none;font-size:15px;color:var(--text);font-family:inherit;font-weight:500}
+.field input::placeholder{color:var(--text3);font-weight:400}
+.field select option{background:var(--surface);color:var(--text)}
+.add-btn{width:100%;padding:13px;background:var(--text);color:var(--bg);border:none;font-size:15px;font-weight:600;cursor:pointer;font-family:inherit;letter-spacing:0.3px;transition:opacity .15s}
+.add-btn:active{opacity:.75}
+
+.rec-group{margin:0 16px 4px}
+.rec-date-header{font-size:12px;color:var(--text3);padding:14px 0 6px;letter-spacing:0.3px;font-weight:500}
+.rec-item{display:flex;align-items:center;gap:10px;padding:12px 14px;background:var(--surface);border:0.5px solid var(--border);border-radius:10px;margin-bottom:6px}
+.dot{width:9px;height:9px;border-radius:50%;flex-shrink:0}
+.rec-info{flex:1;min-width:0}
+.rec-name{font-size:14px;font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.rec-cat{font-size:12px;color:var(--text3);margin-top:1px}
+.rec-amt{font-size:15px;font-weight:600;letter-spacing:-0.3px}
+.rec-del{background:none;border:none;cursor:pointer;color:var(--text3);padding:4px;font-size:18px;line-height:1;margin-left:4px}
+.empty-msg{text-align:center;padding:48px 0;color:var(--text3);font-size:14px}
+
+/* 통계 탭 */
+.stat-section{margin:14px 16px}
+.stat-title{font-size:13px;font-weight:500;color:var(--text2);margin-bottom:10px}
+.bar-item{margin-bottom:14px}
+.bar-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:5px}
+.bar-name{font-size:14px;font-weight:500}
+.bar-amt{font-size:14px;color:var(--text2)}
+.bar-pct{font-size:11px;color:var(--text3);margin-left:6px}
+.bar-track{height:7px;background:var(--surface2);border-radius:4px;overflow:hidden}
+.bar-fill{height:100%;border-radius:4px;transition:width .4s ease}
+.no-data{text-align:center;padding:40px 0;color:var(--text3);font-size:14px}
+
+/* 카테고리 탭 */
+.cat-section{margin:14px 16px}
+.cat-section-title{font-size:13px;font-weight:500;color:var(--text2);margin-bottom:10px;padding-bottom:6px;border-bottom:0.5px solid var(--border)}
+.chips{display:flex;flex-wrap:wrap;gap:7px;margin-bottom:12px}
+.chip{display:flex;align-items:center;gap:5px;padding:6px 11px;border-radius:20px;border:0.5px solid var(--border2);font-size:13px;font-weight:500;background:var(--surface)}
+.chip-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
+.chip-x{background:none;border:none;color:var(--text3);cursor:pointer;padding:0 0 0 3px;font-size:14px;line-height:1;font-family:inherit}
+.new-row{display:flex;gap:8px;align-items:center}
+.new-row input[type=text]{flex:1;padding:9px 12px;border-radius:10px;border:0.5px solid var(--border2);background:var(--surface);color:var(--text);font-size:14px;font-family:inherit;outline:none}
+input[type=color].cpick{width:38px;height:38px;padding:3px;border-radius:10px;border:0.5px solid var(--border2);background:var(--surface);cursor:pointer;flex-shrink:0}
+.add-cat-btn{padding:9px 14px;border-radius:10px;border:0.5px solid var(--border2);background:var(--surface);color:var(--text);font-size:13px;font-weight:500;cursor:pointer;font-family:inherit;white-space:nowrap}
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="header-top">
+    <h1>가계부</h1>
+    <div class="month-nav">
+      <button class="month-btn" onclick="changeMonth(-1)">‹</button>
+      <span class="month-label" id="monthLabel"></span>
+      <button class="month-btn" onclick="changeMonth(1)">›</button>
+    </div>
+  </div>
+</div>
+
+<div class="summary">
+  <div class="sum-item"><div class="sum-label">수입</div><div class="sum-val inc" id="sInc">₩0</div></div>
+  <div class="sum-item"><div class="sum-label">지출</div><div class="sum-val exp" id="sExp">₩0</div></div>
+  <div class="sum-item"><div class="sum-label">잔액</div><div class="sum-val bal" id="sBal">₩0</div></div>
+</div>
+
+<div class="tab-bar">
+  <div class="tab on" onclick="switchTab('rec')">기록</div>
+  <div class="tab" onclick="switchTab('stat')">통계</div>
+  <div class="tab" onclick="switchTab('cat')">카테고리</div>
+</div>
+
+<div class="content">
+
+<!-- 기록 탭 -->
+<div id="t-rec">
+  <div class="add-card">
+    <div class="type-row">
+      <button class="type-btn on-exp" id="btnExp" onclick="setType('exp')">지출</button>
+      <button class="type-btn" id="btnInc" onclick="setType('inc')">수입</button>
+    </div>
+    <div class="add-fields">
+      <div class="field">
+        <span class="field-label">금액</span>
+        <input type="number" id="fAmt" placeholder="0" inputmode="numeric">
+        <span style="font-size:14px;color:var(--text3)">원</span>
+      </div>
+      <div class="field">
+        <span class="field-label">내용</span>
+        <input type="text" id="fMemo" placeholder="선택사항">
+      </div>
+      <div class="field">
+        <span class="field-label">분류</span>
+        <select id="fCat"></select>
+      </div>
+      <div class="field">
+        <span class="field-label">날짜</span>
+        <input type="date" id="fDate">
+      </div>
+    </div>
+    <button class="add-btn" onclick="addRec()">추가하기</button>
+  </div>
+  <div id="recList"></div>
+</div>
+
+<!-- 통계 탭 -->
+<div id="t-stat" style="display:none">
+  <div class="stat-section">
+    <div class="stat-title">카테고리별 지출</div>
+    <div id="statBars"></div>
+  </div>
+</div>
+
+<!-- 카테고리 탭 -->
+<div id="t-cat" style="display:none">
+  <div class="cat-section">
+    <div class="cat-section-title">지출 카테고리</div>
+    <div class="chips" id="expChips"></div>
+    <div class="new-row">
+      <input type="color" class="cpick" id="cExpColor" value="#d85a30">
+      <input type="text" id="cExpName" placeholder="카테고리 이름">
+      <button class="add-cat-btn" onclick="addCat('exp')">추가</button>
+    </div>
+  </div>
+  <div class="cat-section" style="margin-top:6px">
+    <div class="cat-section-title">수입 카테고리</div>
+    <div class="chips" id="incChips"></div>
+    <div class="new-row">
+      <input type="color" class="cpick" id="cIncColor" value="#1d9e75">
+      <input type="text" id="cIncName" placeholder="카테고리 이름">
+      <button class="add-cat-btn" onclick="addCat('inc')">추가</button>
+    </div>
+  </div>
+</div>
+
+</div>
+
+<script>
+let S = {
+  records: [],
+  cats: {
+    exp: [{n:'식비',c:'#d85a30'},{n:'교통',c:'#185fa5'},{n:'쇼핑',c:'#7f77dd'},{n:'의료',c:'#e24b4a'},{n:'여가',c:'#ba7517'},{n:'기타',c:'#888780'}],
+    inc: [{n:'급여',c:'#1d9e75'},{n:'부수입',c:'#639922'},{n:'기타',c:'#888780'}]
+  },
+  type: 'exp',
+  tab: 'rec',
+  viewYear: new Date().getFullYear(),
+  viewMonth: new Date().getMonth()
+};
+
+function load() {
+  try { const d = localStorage.getItem('hb2'); if(d) S = JSON.parse(d); } catch(e) {}
+}
+function save() {
+  try { localStorage.setItem('hb2', JSON.stringify(S)); } catch(e) {}
+}
+function fmt(n) { return '₩' + Math.round(n).toLocaleString('ko-KR'); }
+function ymKey() { return `${S.viewYear}-${String(S.viewMonth+1).padStart(2,'0')}`; }
+function monthRecs() { return S.records.filter(r => r.d && r.d.startsWith(ymKey())); }
+function catColor(type, name) { const c = S.cats[type].find(x=>x.n===name); return c ? c.c : '#888'; }
+
+function changeMonth(d) {
+  S.viewMonth += d;
+  if (S.viewMonth > 11) { S.viewMonth = 0; S.viewYear++; }
+  if (S.viewMonth < 0) { S.viewMonth = 11; S.viewYear--; }
+  render();
+}
+
+function setType(t) {
+  S.type = t;
+  document.getElementById('btnExp').className = 'type-btn' + (t==='exp' ? ' on-exp' : '');
+  document.getElementById('btnInc').className = 'type-btn' + (t==='inc' ? ' on-inc' : '');
+  renderCatSel();
+}
+
+function renderCatSel() {
+  const sel = document.getElementById('fCat');
+  sel.innerHTML = S.cats[S.type].map(c => `<option value="${c.n}">${c.n}</option>`).join('');
+}
+
+function addRec() {
+  const amt = parseFloat(document.getElementById('fAmt').value);
+  if (!amt || amt <= 0) { alert('금액을 입력해주세요'); return; }
+  const memo = document.getElementById('fMemo').value.trim();
+  const cat = document.getElementById('fCat').value;
+  const date = document.getElementById('fDate').value || new Date().toISOString().slice(0,10);
+  S.records.unshift({ id: Date.now(), t: S.type, amt, memo, cat, d: date });
+  document.getElementById('fAmt').value = '';
+  document.getElementById('fMemo').value = '';
+  save(); render();
+}
+
+function delRec(id) {
+  if (!confirm('삭제할까요?')) return;
+  S.records = S.records.filter(r => r.id !== id);
+  save(); render();
+}
+
+function addCat(type) {
+  const n = document.getElementById(type==='exp'?'cExpName':'cIncName').value.trim();
+  const c = document.getElementById(type==='exp'?'cExpColor':'cIncColor').value;
+  if (!n) return;
+  if (S.cats[type].find(x=>x.n===n)) { alert('이미 있는 카테고리예요'); return; }
+  S.cats[type].push({n, c});
+  document.getElementById(type==='exp'?'cExpName':'cIncName').value = '';
+  save(); render();
+}
+
+function delCat(type, name) {
+  if (S.cats[type].length <= 1) { alert('최소 1개는 필요해요'); return; }
+  if (!confirm(`'${name}' 카테고리를 삭제할까요?`)) return;
+  S.cats[type] = S.cats[type].filter(x=>x.n!==name);
+  save(); render();
+}
+
+function switchTab(tab) {
+  S.tab = tab;
+  ['rec','stat','cat'].forEach(t => {
+    document.getElementById('t-'+t).style.display = t===tab ? '' : 'none';
+  });
+  document.querySelectorAll('.tab').forEach((el,i) => {
+    el.className = 'tab' + (['rec','stat','cat'][i]===tab ? ' on' : '');
+  });
+  render();
+}
+
+function render() {
+  const ym = ymKey();
+  const months = ['1월','2월','3월','4월','5월','6월','7월','8월','9월','10월','11월','12월'];
+  document.getElementById('monthLabel').textContent = `${S.viewYear}년 ${months[S.viewMonth]}`;
+
+  const mr = monthRecs();
+  const inc = mr.filter(r=>r.t==='inc').reduce((s,r)=>s+r.amt,0);
+  const exp = mr.filter(r=>r.t==='exp').reduce((s,r)=>s+r.amt,0);
+  document.getElementById('sInc').textContent = fmt(inc);
+  document.getElementById('sExp').textContent = fmt(exp);
+  const bal = inc - exp;
+  const bEl = document.getElementById('sBal');
+  bEl.textContent = fmt(Math.abs(bal));
+  bEl.style.color = bal < 0 ? 'var(--expense)' : 'var(--income)';
+
+  renderCatSel();
+
+  // 기록 목록
+  if (mr.length === 0) {
+    document.getElementById('recList').innerHTML = '<div class="empty-msg">이번 달 기록이 없어요</div>';
+  } else {
+    const byDate = {};
+    mr.forEach(r => { if (!byDate[r.d]) byDate[r.d] = []; byDate[r.d].push(r); });
+    const days = Object.keys(byDate).sort((a,b)=>b.localeCompare(a));
+    document.getElementById('recList').innerHTML = days.map(d => {
+      const dateObj = new Date(d + 'T00:00:00');
+      const dow = ['일','월','화','수','목','금','토'][dateObj.getDay()];
+      const label = `${parseInt(d.slice(5,7))}월 ${parseInt(d.slice(8,10))}일 (${dow})`;
+      const items = byDate[d].map(r => {
+        const col = catColor(r.t, r.cat);
+        const sign = r.t==='inc' ? '+' : '−';
+        const amtStyle = r.t==='inc' ? 'color:var(--income)' : 'color:var(--expense)';
+        return `<div class="rec-item">
+          <div class="dot" style="background:${col}"></div>
+          <div class="rec-info">
+            <div class="rec-name">${r.memo || r.cat}</div>
+            <div class="rec-cat">${r.cat}</div>
+          </div>
+          <div class="rec-amt" style="${amtStyle}">${sign}${fmt(r.amt)}</div>
+          <button class="rec-del" onclick="delRec(${r.id})">×</button>
+        </div>`;
+      }).join('');
+      return `<div class="rec-group"><div class="rec-date-header">${label}</div>${items}</div>`;
+    }).join('');
+  }
+
+  // 통계 바
+  const expRecs = mr.filter(r=>r.t==='exp');
+  if (!expRecs.length) {
+    document.getElementById('statBars').innerHTML = '<div class="no-data">지출 내역이 없어요</div>';
+  } else {
+    const bycat = {};
+    expRecs.forEach(r => { bycat[r.cat] = (bycat[r.cat]||0) + r.amt; });
+    const total = Object.values(bycat).reduce((s,v)=>s+v,0);
+    const max = Math.max(...Object.values(bycat));
+    document.getElementById('statBars').innerHTML = Object.entries(bycat)
+      .sort((a,b)=>b[1]-a[1])
+      .map(([cat,amt]) => {
+        const col = catColor('exp', cat);
+        const pct = Math.round(amt/total*100);
+        const w = Math.round(amt/max*100);
+        return `<div class="bar-item">
+          <div class="bar-top">
+            <span class="bar-name">${cat}</span>
+            <span class="bar-amt">${fmt(amt)}<span class="bar-pct">${pct}%</span></span>
+          </div>
+          <div class="bar-track"><div class="bar-fill" style="width:${w}%;background:${col}"></div></div>
+        </div>`;
+      }).join('');
+  }
+
+  // 카테고리 칩
+  document.getElementById('expChips').innerHTML = S.cats.exp.map(c =>
+    `<div class="chip"><div class="chip-dot" style="background:${c.c}"></div>${c.n}<button class="chip-x" onclick="delCat('exp','${c.n}')">×</button></div>`
+  ).join('');
+  document.getElementById('incChips').innerHTML = S.cats.inc.map(c =>
+    `<div class="chip"><div class="chip-dot" style="background:${c.c}"></div>${c.n}<button class="chip-x" onclick="delCat('inc','${c.n}')">×</button></div>`
+  ).join('');
+}
+
+load();
+document.getElementById('fDate').value = new Date().toISOString().slice(0,10);
+render();
+</script>
+</body>
+</html>
