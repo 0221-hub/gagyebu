@@ -1,8 +1,8 @@
-const CACHE = 'gaegyebu-v1';
+const CACHE = 'gaegyebu-v2';
 const ASSETS = [
   './',
   './index.html',
-  'https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;600&display=swap'
+  './Ownglyph_Saehayan.ttf'
 ];
 
 self.addEventListener('install', e => {
