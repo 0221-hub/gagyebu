@@ -1,8 +1,8 @@
-const CACHE = 'gaegyebu-v2';
+const CACHE = 'gaegyebu-v3';
 const ASSETS = [
   './',
   './index.html',
-  './Ownglyph_Saehayan.ttf'
+  './DearNewWarmDayM.ttf'
 ];
 
 self.addEventListener('install', e => {
